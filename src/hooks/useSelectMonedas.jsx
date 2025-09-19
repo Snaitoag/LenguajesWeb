@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import styled from "@emotion/styled";
 import React from "react";
 
@@ -18,16 +18,20 @@ const Select = styled.select`
   border-radius: 10px;
   margin-bottom: 20px;
   font-size: 18px;
+  border: ${props => props.error ? '2px solid #B7322C' : 'none'}; // Estilo condicional para el error
 `;
 
-function useSelectMonedas(label, opciones) {
-
-    const [state, setState] = useState(' ')
+function useSelectMonedas(label, opciones = [], error) { // Agregamos la prop 'error'
+  const [state, setState] = useState("");
 
   const SelectMonedas = () => (
     <>
       <Label>{label}</Label>
-      <Select value = {state} onChange={e => setState(e.target.value)}>
+      <Select
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        error={error} // Pasamos la prop 'error' al componente `Select`
+      >
         <option value="">Seleccione</option>
         {opciones.map((opcion) => (
           <option key={opcion.id} value={opcion.id}>
@@ -37,7 +41,8 @@ function useSelectMonedas(label, opciones) {
       </Select>
     </>
   );
-  return [SelectMonedas];
+
+  return [state, SelectMonedas];
 }
 
 export default useSelectMonedas;
